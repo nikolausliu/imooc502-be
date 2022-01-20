@@ -8,6 +8,8 @@ const log4js = require('./utils/log4j')
 
 const router = require('koa-router')()
 const users = require('./routes/users')
+const koajwt = require('koa-jwt')
+const util = require('./utils/util')
 
 // error handler
 onerror(app)
@@ -35,11 +37,31 @@ app.use(views(__dirname + '/views', {
 app.use(async (ctx, next) => {
   log4js.info(`ctx.request.query: ${JSON.stringify(ctx.request.query)}`)
   log4js.info(`ctx.request.body: ${JSON.stringify(ctx.request.body)}`)
-  await next()
+  await next().catch((err) => {
+    if (err.status == '401') {
+      ctx.status = 200
+      ctx.body = util.fail('Token认证失败', util.CODE.AUTH_ERROR)
+    } else {
+      throw err
+    }
+  })
 })
 
+
 // routes
+app.use(koajwt({ secret: 'IMOOC' }).unless({
+  path: [/^\/api\/users\/login/]
+}))
 router.prefix('/api')
+
+const jwt = require('jsonwebtoken')
+router.get('/leave/count', (ctx) => {
+  // const token = ctx.request.headers.authorization.split(' ')[1]
+  // const payload = jwt.verify(token, 'IMOOC')
+  // ctx.body = payload
+  ctx.body = 'hello'
+})
+
 router.use(users.routes(), users.allowedMethods())
 app.use(router.routes(), router.allowedMethods())
 
