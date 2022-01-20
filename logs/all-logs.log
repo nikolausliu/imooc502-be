@@ -7,3 +7,47 @@
 [2022-01-20T10:19:06.959] [INFO] info - log output
 [2022-01-20T10:19:09.592] [INFO] info - log output
 [2022-01-20T10:19:14.267] [INFO] info - log output
+[2022-01-20T13:23:57.128] [INFO] info - log output
+[2022-01-20T13:27:44.276] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:28:34.970] [INFO] info - log output
+[2022-01-20T13:30:44.262] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:31:17.478] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:31:56.156] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:34:40.693] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:37:26.293] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:37:51.374] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:38:59.555] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:43:38.132] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:48:08.932] [INFO] info - ***数据库连接成功***
+[2022-01-20T13:55:37.439] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:02:18.333] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:04:03.367] [INFO] info - log output
+[2022-01-20T14:04:06.835] [INFO] info - log output
+[2022-01-20T14:04:31.299] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:04:32.111] [INFO] info - log output
+[2022-01-20T14:05:47.283] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:05:47.307] [INFO] info - log output
+[2022-01-20T14:05:48.502] [INFO] info - log output
+[2022-01-20T14:05:49.577] [INFO] info - log output
+[2022-01-20T14:07:11.576] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:07:16.404] [INFO] info - log output
+[2022-01-20T14:07:18.648] [INFO] info - log output
+[2022-01-20T14:07:56.749] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:12:17.752] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:12:34.364] [INFO] info - log output
+[2022-01-20T14:12:46.211] [INFO] info - log output
+[2022-01-20T14:13:04.638] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:13:10.887] [INFO] info - log output
+[2022-01-20T14:13:18.425] [INFO] info - log output
+[2022-01-20T14:15:57.444] [INFO] info - log output
+[2022-01-20T14:25:10.710] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:25:16.629] [INFO] info - get params: {}
+[2022-01-20T14:25:16.630] [INFO] info - post params: {"userName":"admin","userPwd":"admin"}
+[2022-01-20T14:31:20.780] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:31:22.854] [INFO] info - ctx: {"request":{"method":"POST","url":"/api/users/login","header":{"user-agent":"PostmanRuntime/7.26.8","accept":"*/*","postman-token":"82649ba2-0620-4d89-9641-b7d8c0dd3433","host":"localhost:3000","accept-encoding":"gzip, deflate, br","connection":"keep-alive","content-type":"application/x-www-form-urlencoded","content-length":"28"}},"response":{"status":404,"message":"Not Found","header":{}},"app":{"subdomainOffset":2,"proxy":false,"env":"development"},"originalUrl":"/api/users/login","req":"<original node req>","res":"<original node res>","socket":"<original node socket>"}
+[2022-01-20T14:31:22.857] [INFO] info - get params: {}
+[2022-01-20T14:31:22.858] [INFO] info - post params: {"userName":"admin","userPwd":"admin"}
+[2022-01-20T14:33:00.970] [INFO] info - ***数据库连接成功***
+[2022-01-20T14:33:33.035] [INFO] info - ctx: {"request":{"method":"POST","url":"/api/users/login","header":{"content-type":"application/json","user-agent":"PostmanRuntime/7.26.8","accept":"*/*","postman-token":"ef24acc8-2f0a-4166-afd0-feba0c2f9584","host":"localhost:3000","accept-encoding":"gzip, deflate, br","connection":"keep-alive","content-length":"54"}},"response":{"status":404,"message":"Not Found","header":{}},"app":{"subdomainOffset":2,"proxy":false,"env":"development"},"originalUrl":"/api/users/login","req":"<original node req>","res":"<original node res>","socket":"<original node socket>"}
+[2022-01-20T14:33:33.038] [INFO] info - get params: {}
+[2022-01-20T14:33:33.039] [INFO] info - post params: {"userName":"admin","userPwd":"admin"}
