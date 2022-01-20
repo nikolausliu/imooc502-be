@@ -1,0 +1,7 @@
+[2022-01-19T18:18:14.042] [ERROR] error - ReferenceError: ctx is not defined
+    at E:\niko\repo\imooc502-be\app.js:31:3
+    at dispatch (E:\niko\repo\imooc502-be\node_modules\koa\node_modules\koa-compose\index.js:42:32)
+    at views (E:\niko\repo\imooc502-be\node_modules\koa-views\src\index.js:91:12)
+    at dispatch (E:\niko\repo\imooc502-be\node_modules\koa\node_modules\koa-compose\index.js:42:32)
+    at serve (E:\niko\repo\imooc502-be\node_modules\koa-static\index.js:53:15)
+    at async bodyParser (E:\niko\repo\imooc502-be\node_modules\koa-bodyparser\index.js:95:5)
