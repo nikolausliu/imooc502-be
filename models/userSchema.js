@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
   userEmail: String,
   mobile: String,
   sex: Number,
-  depId: [], // 部门
+  deptId: [], // 部门
   job: String,
   state: {
     type: Number,
