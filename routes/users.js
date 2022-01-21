@@ -1,10 +1,15 @@
 const router = require('koa-router')()
 const User = require('../models/userSchema')
+const Counter = require('../models/counterSchema')
 const util = require('../utils/util')
 const jwt = require('jsonwebtoken')
+const md5 = require('md5')
 
 router.prefix('/users')
 
+/**
+ * 用户登录
+ */
 router.post('/login', async (ctx) => {
   try {
     const { userName, userPwd } = ctx.request.body
@@ -26,13 +31,16 @@ router.post('/login', async (ctx) => {
     if (res) {
       ctx.body = util.success(data)
     } else {
-      ctx.body = util.fail('账号或密码不正确')
+      ctx.body = util.fail('', '账号或密码不正确')
     }
   } catch (error) {
-    ctx.body = util.fail(error.msg)
+    ctx.body = util.fail('', error.msg)
   }
 })
 
+/**
+ * 用户列表
+ */
 router.get('/list', async (ctx) => {
   const { userId, userName, state } = ctx.request.query
   const { page, skipIndex } = util.pager(ctx.request.query)
@@ -52,10 +60,13 @@ router.get('/list', async (ctx) => {
       list
     })
   } catch (error) {
-    ctx.body = util.fail(`查询异常:${error.stack}`)
+    ctx.body = util.fail('', `查询异常: ${error.message}`)
   }
 })
 
+/**
+ * 用户批量删除
+ */
 router.post('/delete', async (ctx) => {
   const { userIds } = ctx.request.body
   /**
@@ -73,9 +84,59 @@ router.post('/delete', async (ctx) => {
       ctx.body = util.success(res, `共删除成功${res.nModified}条`)
       return
     }
-    ctx.body = util.fail('删除失败')
+    ctx.body = util.fail('', '删除失败')
   } catch (error) {
-    ctx.body = util.fail(`删除操作异常:${error.stack}`)
+    ctx.body = util.fail('', `删除操作异常: ${error.message}`)
+  }
+})
+
+/**
+ * 用户新增/编辑
+ */
+router.post('/operate', async (ctx) => {
+  const { userId, userName, userEmail, mobile, job, state, roleList, deptId, action } = ctx.request.body
+  if (action === 'add') {
+    if (!userName || !userEmail || !(deptId && deptId.length)) {
+      ctx.body = util.fail('', '参数错误', util.CODE.PARAM_ERROR)
+      return
+    }
+    // 通过counter表实现userId自增
+    const doc = await Counter.findOneAndUpdate({ _id: 'userId' }, { $inc: { sequence_value: 1 } }, { new: true })
+    // 新增的时候要判断用户名邮箱不能与已有用户重复
+    const res = await User.findOne({ $or: [{ userName }, { userEmail }] }, '_id userName userEmail')
+    if (res) {
+      ctx.body = util.fail('', `系统检测到有重复的用户，信息如下：${res.userName} - ${res.userEmail}`)
+    } else {
+      try {
+        const user = new User({
+          userId: doc.sequence_value,
+          userName,
+          userPwd: md5('123456'), // 默认初始密码
+          userEmail,
+          role: 1,  // 默认普通用户
+          roleList,
+          job,
+          state,
+          deptId,
+          mobile
+        })
+        user.save()
+        ctx.body = util.success({}, '用户创建成功')
+      } catch (error) {
+        ctx.body = util.fail('', '用户创建失败')
+      }
+    }
+  } else {
+    if (!(deptId && deptId.length)) {
+      ctx.body = util.fail('', '部门不能为空', util.CODE.PARAM_ERROR)
+      return
+    }
+    try {
+      await User.findOneAndUpdate({ userId }, { mobile, job, state, roleList, deptId })
+      ctx.body = util.success({}, '更新成功')
+    } catch (error) {
+      ctx.body = util.fail('', `更新失败: ${error.message}`)
+    }
   }
 })
 
