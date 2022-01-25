@@ -12,6 +12,7 @@ const router = require('koa-router')()
 const users = require('./routes/users')
 const menus = require('./routes/menus')
 const roles = require('./routes/roles')
+const depts = require('./routes/depts')
 
 // error handler
 onerror(app)
@@ -19,15 +20,19 @@ onerror(app)
 require('./config/db')
 
 // middlewares
-app.use(bodyparser({
-  enableTypes: ['json', 'form', 'text']
-}))
+app.use(
+  bodyparser({
+    enableTypes: ['json', 'form', 'text'],
+  })
+)
 app.use(json())
 app.use(require('koa-static')(__dirname + '/public'))
 
-app.use(views(__dirname + '/views', {
-  extension: 'pug'
-}))
+app.use(
+  views(__dirname + '/views', {
+    extension: 'pug',
+  })
+)
 
 // 触发错误
 // app.use(async () => {
@@ -49,11 +54,12 @@ app.use(async (ctx, next) => {
   })
 })
 
-
 // routes
-app.use(koajwt({ secret: 'IMOOC' }).unless({
-  path: [/^\/api\/users\/login/]
-}))
+app.use(
+  koajwt({ secret: 'IMOOC' }).unless({
+    path: [/^\/api\/users\/login/],
+  })
+)
 router.prefix('/api')
 
 const jwt = require('jsonwebtoken')
@@ -67,11 +73,12 @@ router.get('/leave/count', (ctx) => {
 router.use(users.routes(), users.allowedMethods())
 router.use(menus.routes(), menus.allowedMethods())
 router.use(roles.routes(), roles.allowedMethods())
+router.use(depts.routes(), depts.allowedMethods())
 app.use(router.routes(), router.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
   log4js.error(`${err.stack}`)
-});
+})
 
 module.exports = app
