@@ -19,14 +19,21 @@ router.post('/login', async (ctx) => {
      * 2. findOne({}, {userName: 1, _id: 0})
      * 3. findOne({}).select('userId userName')
      */
-    const res = await User.findOne({
-      userName,
-      userPwd
-    }, 'userId userName userEmail state role deptId roleList')
+    const res = await User.findOne(
+      {
+        userName,
+        userPwd,
+      },
+      'userId userName userEmail state role deptId roleList'
+    )
     const data = res._doc
-    const token = jwt.sign({
-      data,
-    }, 'IMOOC', { expiresIn: '1h' })
+    const token = jwt.sign(
+      {
+        data,
+      },
+      'IMOOC',
+      { expiresIn: '1h' }
+    )
     data.token = token
     if (res) {
       ctx.body = util.success(data)
@@ -34,7 +41,17 @@ router.post('/login', async (ctx) => {
       ctx.body = util.fail('', '账号或密码不正确')
     }
   } catch (error) {
-    ctx.body = util.fail('', error.msg)
+    ctx.body = util.fail('', error.message)
+  }
+})
+
+// 获取全量用户列表
+router.get('/all/list', async (ctx) => {
+  try {
+    const list = await User.find({}, 'userId userName userEmail')
+    ctx.body = util.success(list)
+  } catch (error) {
+    ctx.body = util.fail('', error.message)
   }
 })
 
@@ -55,9 +72,9 @@ router.get('/list', async (ctx) => {
     ctx.body = util.success({
       page: {
         ...page,
-        total
+        total,
       },
-      list
+      list,
     })
   } catch (error) {
     ctx.body = util.fail('', `查询异常: ${error.message}`)
@@ -94,18 +111,26 @@ router.post('/delete', async (ctx) => {
  * 用户新增/编辑
  */
 router.post('/operate', async (ctx) => {
-  const { userId, userName, userEmail, mobile, job, state, roleList, deptId, action } = ctx.request.body
+  const { userId, userName, userEmail, mobile, job, state, roleList, deptId, action } =
+    ctx.request.body
   if (action === 'add') {
     if (!userName || !userEmail || !(deptId && deptId.length)) {
       ctx.body = util.fail('', '参数错误', util.CODE.PARAM_ERROR)
       return
     }
     // 通过counter表实现userId自增
-    const doc = await Counter.findOneAndUpdate({ _id: 'userId' }, { $inc: { sequence_value: 1 } }, { new: true })
+    const doc = await Counter.findOneAndUpdate(
+      { _id: 'userId' },
+      { $inc: { sequence_value: 1 } },
+      { new: true }
+    )
     // 新增的时候要判断用户名邮箱不能与已有用户重复
     const res = await User.findOne({ $or: [{ userName }, { userEmail }] }, '_id userName userEmail')
     if (res) {
-      ctx.body = util.fail('', `系统检测到有重复的用户，信息如下：${res.userName} - ${res.userEmail}`)
+      ctx.body = util.fail(
+        '',
+        `系统检测到有重复的用户，信息如下：${res.userName} - ${res.userEmail}`
+      )
     } else {
       try {
         const user = new User({
@@ -113,12 +138,12 @@ router.post('/operate', async (ctx) => {
           userName,
           userPwd: md5('123456'), // 默认初始密码
           userEmail,
-          role: 1,  // 默认普通用户
+          role: 1, // 默认普通用户
           roleList,
           job,
           state,
           deptId,
-          mobile
+          mobile,
         })
         user.save()
         ctx.body = util.success({}, '用户创建成功')
