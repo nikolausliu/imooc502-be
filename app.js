@@ -13,6 +13,7 @@ const users = require('./routes/users')
 const menus = require('./routes/menus')
 const roles = require('./routes/roles')
 const depts = require('./routes/depts')
+const leave = require('./routes/leave')
 
 // error handler
 onerror(app)
@@ -74,6 +75,7 @@ router.use(users.routes(), users.allowedMethods())
 router.use(menus.routes(), menus.allowedMethods())
 router.use(roles.routes(), roles.allowedMethods())
 router.use(depts.routes(), depts.allowedMethods())
+router.use(leave.routes(), leave.allowedMethods())
 app.use(router.routes(), router.allowedMethods())
 
 // error-handling
