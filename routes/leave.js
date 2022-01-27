@@ -5,6 +5,44 @@ const util = require('../utils/util')
 
 router.prefix('/leave')
 
+// 查询申请列表
+router.get('/list', async (ctx) => {
+  const { applyState, type } = ctx.request.query
+  const { page, skipIndex } = util.pager(ctx.request.query)
+  let authorization = ctx.request.headers.authorization
+  let { data } = util.decoded(authorization)
+  try {
+    let params = {}
+    if (type == 'approve') {
+      if (applyState == 1 || applyState == 2) {
+        params.curAuditUserName = data.userName
+        params.$or = [{ applyState: 1 }, { applyState: 2 }]
+      } else if (applyState > 2) {
+        params = { 'auditFlows.userId': data.userId, applyState }
+      } else {
+        params = { 'auditFlows.userId': data.userId }
+      }
+    } else {
+      params = {
+        'applyUser.userId': data.userId,
+      }
+      if (applyState) params.applyState = applyState
+    }
+    const query = Leave.find(params)
+    const list = await query.skip(skipIndex).limit(page.pageSize)
+    const total = await Leave.countDocuments(params)
+    ctx.body = util.success({
+      page: {
+        ...page,
+        total,
+      },
+      list,
+    })
+  } catch (error) {
+    ctx.body = util.fail(`查询失败:${error.message}`)
+  }
+})
+
 router.post('/operate', async (ctx) => {
   const { _id, action, ...params } = ctx.request.body
   let authorization = ctx.request.headers.authorization

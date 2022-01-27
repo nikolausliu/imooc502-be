@@ -33,7 +33,7 @@ router.post('/login', async (ctx) => {
         data,
       },
       'IMOOC',
-      { expiresIn: '1h' }
+      { expiresIn: '24h' }
     )
     data.token = token
     if (res) {
