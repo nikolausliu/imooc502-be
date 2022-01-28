@@ -63,14 +63,6 @@ app.use(
 )
 router.prefix('/api')
 
-const jwt = require('jsonwebtoken')
-router.get('/leave/count', (ctx) => {
-  // const token = ctx.request.headers.authorization.split(' ')[1]
-  // const payload = jwt.verify(token, 'IMOOC')
-  // ctx.body = payload
-  ctx.body = 'hello'
-})
-
 router.use(users.routes(), users.allowedMethods())
 router.use(menus.routes(), menus.allowedMethods())
 router.use(roles.routes(), roles.allowedMethods())
