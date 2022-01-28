@@ -26,7 +26,7 @@ jobs:
 
       # 压缩文件： .表示压缩当前文件夹下所有文件 --exclude参数用来排除不需要压缩的文件
       - name: compress files
-        run: tar -zcvf release.tgz . --exclude=.git
+        run: tar -zcvf release.tgz . --exclude .git
 
       # 发布 Release
       - name: Create Release
