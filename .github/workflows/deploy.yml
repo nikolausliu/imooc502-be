@@ -25,8 +25,10 @@ jobs:
           check-latest: true
 
       # 压缩文件： .表示压缩当前文件夹下所有文件 --exclude参数用来排除不需要压缩的文件
+      # 需要特别注意:如果使用 . 来压缩当前文件夹所有文件，则必须排除最终压缩产物 release.tgz
+      # 否则会报错 tar: .: file changed as we read it
       - name: compress files
-        run: tar -zcvf release.tgz --exclude=.git .
+        run: tar -zcvf release.tgz --exclude=.git --exclude=release.tgz .
 
       # 发布 Release
       - name: Create Release
