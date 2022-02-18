@@ -2,6 +2,7 @@ const router = require('koa-router')()
 const User = require('../models/userSchema')
 const Counter = require('../models/counterSchema')
 const Menu = require('../models/menuSchema')
+const Role = require('../models/roleSchema')
 const util = require('../utils/util')
 const jwt = require('jsonwebtoken')
 const md5 = require('md5')
@@ -98,6 +99,7 @@ router.post('/delete', async (ctx) => {
    */
   try {
     const res = await User.updateMany({ userId: { $in: userIds } }, { state: 2 })
+    console.log('res', res)
     if (res.nModified) {
       ctx.body = util.success(res, `共删除成功${res.nModified}条`)
       return
